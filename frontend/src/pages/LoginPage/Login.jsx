@@ -14,7 +14,7 @@ function Login() {
     event.preventDefault();
     try {
       const { data } = await axios.post(
-        "http://localhost:4000/api/auth/login",
+        "https://attendance-logging-platform.onrender.com/api/auth/login",
         { email, password }
       );
       localStorage.setItem("token", data.token);

@@ -101,6 +101,69 @@ router.get("/summary/:userId", async (req, res) => {
 //   }
 // });
 
+
+
+// Example geo-fence coordinates (circle with center and radius)
+const geoFenceCenter = { lat: 28.6139, lng: 77.209 }; // e.g., Delhi
+const geoFenceRadiusMeters = 100000; // 1 km radius
+
+function getDistanceFromLatLonInMeters(lat1, lon1, lat2, lon2) {
+  const R = 6371000; // radius of Earth in meters
+  const dLat = ((lat2 - lat1) * Math.PI) / 180;
+  const dLon = ((lon2 - lon1) * Math.PI) / 180;
+  const a =
+    Math.sin(dLat / 2) * Math.sin(dLat / 2) +
+    Math.cos((lat1 * Math.PI) / 180) *
+      Math.cos((lat2 * Math.PI) / 180) *
+      Math.sin(dLon / 2) *
+      Math.sin(dLon / 2);
+  const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
+  return R * c;
+}
+
+router.post("/mark", async (req, res) => {
+  const { userId, date, status, lat, lng, wfh, holiday: clientHoliday } = req.body;
+
+  // Geo-fencing check
+  let geoFenceStatus = "Outside";
+  if (lat && lng) {
+    const distance = getDistanceFromLatLonInMeters(
+      lat,
+      lng,
+      geoFenceCenter.lat,
+      geoFenceCenter.lng
+    );
+    if (distance <= geoFenceRadiusMeters) {
+      geoFenceStatus = "Inside";
+    }
+  } else {
+    geoFenceStatus = "Unknown"; // No location provided
+  }
+
+  // Determine if it's a holiday
+  const dayOfWeek = new Date(date).getDay();
+  const isSunday = dayOfWeek === 0;
+  const holiday = clientHoliday === true || isSunday;
+
+  // Create attendance record
+  const attendance = new Attendance({
+    userId,
+    date,
+    status,
+    geoFenceStatus,
+    holiday,
+    wfh: wfh || false,
+  });
+
+  try {
+    await attendance.save();
+    res.json({ message: "Attendance marked", attendance });
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ message: "Server error" });
+  }
+});
+
 router.get("/details/:userId", async (req, res) => {
   try {
     const { userId } = req.params;

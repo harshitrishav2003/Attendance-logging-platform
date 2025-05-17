@@ -12,6 +12,32 @@
   margin-bottom: 20px;
   margin-top: 30px;
 }
+.attendance-button-container {
+  display: flex;
+  justify-content: center; /* center horizontally */
+  margin-bottom: 20px;
+}
+
+.btn-fetch {
+  width: 180px; /* fixed width */
+  height: 55px;
+  border: none;
+  outline: none;
+  border-radius: 25px;
+  background-color: #e3e7ec; /* nice blue */
+  color: #fff;
+  font-weight: 700;
+  font-size: 16px;
+  cursor: pointer;
+  box-shadow: 0 4px 8px rgba(29, 112, 219, 0.4);
+  transition: background-color 0.3s ease, box-shadow 0.3s ease;
+}
+
+.btn-fetch:hover {
+  background-color: #155fa0;
+  box-shadow: 0 6px 12px rgba(21, 95, 160, 0.6);
+}
+
 
 .filter-container {
   display: flex;

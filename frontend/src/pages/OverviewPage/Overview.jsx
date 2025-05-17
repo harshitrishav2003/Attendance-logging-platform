@@ -1,9 +1,11 @@
 import React, { useEffect, useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, Link } from "react-router-dom";
 import axios from "axios";
 import { jwtDecode } from "jwt-decode";
 import moment from "moment";
 import "./Overview.css";
+
+
 
 function Overview() {
   const [summary, setSummary] = useState({});
@@ -73,24 +75,25 @@ function Overview() {
   }, [selectedMonth, selectedYear, navigate]);
 
   const getAllDaysOfMonth = () => {
-    const daysInMonth = moment(
-      `${selectedYear}-${selectedMonth}`,
-      "YYYY-MM"
-    ).daysInMonth();
-
+    const daysInMonth = moment(`${selectedYear}-${selectedMonth}`, "YYYY-MM").daysInMonth();
+  
     return Array.from({ length: daysInMonth }, (_, index) => {
-      const date = moment(
-        `${selectedYear}-${selectedMonth}-${index + 1}`,
-        "YYYY-MM-DD"
-      ).format("YYYY-MM-DD");
-
+      const date = moment(`${selectedYear}-${selectedMonth}-${index + 1}`, "YYYY-MM-DD").format("YYYY-MM-DD");
+  
       const record = attendanceDetails.find(
         (att) => moment(att.date).format("YYYY-MM-DD") === date
       );
-
-      return { date, status: record ? record.status : "No Record" };
+  
+      return { 
+        date, 
+        status: record ? record.status : "No Record",
+        geoFenceStatus: record ? record.geoFenceStatus : "N/A",
+        holiday: record ? record.holiday : false,
+        wfh: record ? record.wfh : false,
+      };
     });
   };
+  
 
   return (
     <div className="overview-container">
@@ -121,6 +124,11 @@ function Overview() {
           ))}
         </select>
       </div>
+      <div className="attendance-button-container">
+  <Link to="/mark-attendance">
+    <button className="btn-fetch">Mark Today's Attendance</button>
+  </Link>
+</div>
 
       {loading ? (
         <p>Loading...</p>
@@ -153,22 +161,29 @@ function Overview() {
 
       <div className="attendance-table-container">
         <div className="scrollable-table">
-          <table className="attendance-detail-table">
-            <thead>
-              <tr>
-                <th>Date</th>
-                <th>Status</th>
-              </tr>
-            </thead>
-            <tbody>
-              {getAllDaysOfMonth().map((record, index) => (
-                <tr key={index}>
-                  <td>{moment(record.date).format("YYYY-MM-DD")}</td>
-                  <td>{record.status}</td>
-                </tr>
-              ))}
-            </tbody>
-          </table>
+        <table className="attendance-detail-table">
+  <thead>
+    <tr>
+      <th>Date</th>
+      <th>Status</th>
+      <th>Geo-fence</th>
+      <th>Holiday</th>
+      <th>WFH</th>
+    </tr>
+  </thead>
+  <tbody>
+    {getAllDaysOfMonth().map((record, index) => (
+      <tr key={index}>
+        <td>{moment(record.date).format("YYYY-MM-DD")}</td>
+        <td>{record.status}</td>
+        <td>{record.geoFenceStatus}</td>
+        <td>{record.holiday ? "Yes" : "No"}</td>
+        <td>{record.wfh ? "Yes" : "No"}</td>
+      </tr>
+    ))}
+  </tbody>
+</table>
+
         </div>
       </div>
     </div>

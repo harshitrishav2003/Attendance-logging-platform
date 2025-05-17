@@ -28,7 +28,11 @@ const AdminDashboard = () => {
       alert("Access denied. Admins only.");
       return navigate("/");
     }
+<<<<<<< HEAD
    
+=======
+    
+>>>>>>> c8381c1 (changes)
     
     fetchUsers();
   }, [navigate]);

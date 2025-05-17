@@ -28,18 +28,14 @@ const AdminDashboard = () => {
       alert("Access denied. Admins only.");
       return navigate("/");
     }
-<<<<<<< HEAD
-   
-=======
     
->>>>>>> c8381c1 (changes)
     
     fetchUsers();
   }, [navigate]);
 
   const fetchUsers = () => {
     axios
-      .get("https://attendance-logging-platform.onrender.com/api/admin/users", {
+      .get("http://localhost:4000/api/admin/users", {
         headers: { Authorization: `Bearer ${localStorage.getItem("token")}` },
       })
       .then(({ data }) => setUsers(data))
@@ -50,7 +46,7 @@ const AdminDashboard = () => {
     if (!window.confirm("Are you sure you want to delete this user?")) return;
 
     try {
-      await axios.delete(`https://attendance-logging-platform.onrender.com/api/admin/users/${userId}`, {
+      await axios.delete(`http://localhost:4000/api/admin/users/${userId}`, {
         headers: { Authorization: `Bearer ${localStorage.getItem("token")}` },
       });
       alert("User and their attendance records deleted successfully!");
@@ -64,7 +60,7 @@ const AdminDashboard = () => {
   const changeUserRole = async (userId, newRole) => {
     try {
       await axios.put(
-        `https://attendance-logging-platform.onrender.com/api/admin/users/${userId}/role`,
+        `http://localhost:4000/api/admin/users/${userId}/role`,
         { role: newRole },
         {
           headers: { Authorization: `Bearer ${localStorage.getItem("token")}` },
@@ -80,7 +76,7 @@ const AdminDashboard = () => {
 
   const fetchAttendance = () => {
     axios
-      .get("https://attendance-logging-platform.onrender.com/api/admin/attendance", {
+      .get("http://localhost:4000/api/admin/attendance", {
         params: {
           userId: selectedUser,
           date: selectedDate.toISOString().split("T")[0],
@@ -93,7 +89,7 @@ const AdminDashboard = () => {
   const addAttendance = async () => {
     try {
       await axios.post(
-        "https://attendance-logging-platform.onrender.com/api/admin/attendance",
+        "http://localhost:4000/api/admin/attendance",
         {
           userId: selectedUser,
           date: selectedDate.toISOString().split("T")[0],
@@ -116,7 +112,7 @@ const AdminDashboard = () => {
 
   const fetchAllAttendance = () => {
     axios
-      .get("https://attendance-logging-platform.onrender.com/api/admin/attendance/all", {
+      .get("http://localhost:4000/api/admin/attendance/all", {
         params: { userId: selectedUser },
         headers: { Authorization: `Bearer ${localStorage.getItem("token")}` },
       })
@@ -132,7 +128,7 @@ const AdminDashboard = () => {
 
   const deleteAttendance = async (id) => {
     try {
-      await axios.delete(`https://attendance-logging-platform.onrender.com/api/admin/attendance/${id}`, {
+      await axios.delete(`http://localhost:4000/api/admin/attendance/${id}`, {
         headers: {
           Authorization: `Bearer ${localStorage.getItem("token")}`,
         },

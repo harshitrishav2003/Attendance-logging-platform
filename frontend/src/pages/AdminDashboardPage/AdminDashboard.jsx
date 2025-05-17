@@ -28,10 +28,7 @@ const AdminDashboard = () => {
       alert("Access denied. Admins only.");
       return navigate("/");
     }
-    if (user.role !== "employee") {
-      alert("Access denied. Only employees can add their own attendance.");
-      return navigate("/");
-    }
+   
     
     fetchUsers();
   }, [navigate]);

@@ -17,7 +17,7 @@
     <img src="https://img.shields.io/badge/MongoDB-%234ea94b.svg?style=for-the-badge&logo=mongodb&logoColor=white" alt="mongodb" />
   </div>
 
-  <h1 align="center">Employee Attendance System - MERN</h1>
+  <h1 align="center">Attendance logging platform - MERN</h1>
 
    <div align="center">
      The Employee Attendance System is a web-based solution designed to track employee attendance and work hours efficiently. Built using React.js, HTML, CSS, and JavaScript for the frontend and powered by Node.js for the backend, it ensures seamless performance and scalability. The system supports MongoDB for secure and reliable data storage. Key features include user authentication and role management, employee check-in and check-out, automated work hour calculation, real-time attendance tracking, and comprehensive reporting with data visualization, making it a powerful tool for workforce management. 🚀
